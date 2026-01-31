@@ -1,0 +1,19 @@
+/* ==================== Global ==================== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+}
+
+/* Links Reset (if needed globally) */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Optional container utility for consistent spacing */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
