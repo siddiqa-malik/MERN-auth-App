@@ -1,27 +1,3 @@
-// import { useEffect, useState } from "react";
-// import api from "../services/api";
-// import './Dashboard.css';
-
-
-// function Dashboard() {
-//   const [users, setUsers] = useState([]);
-
-//   useEffect(() => {
-//     api.get("/users").then((res) => setUsers(res.data));
-//   }, []);
-
-//   return (
-//     <div>
-//       <h2>Dashboard</h2>
-
-//       {users.map((u) => (
-//         <p key={u._id}>{u.email}</p>
-//       ))}
-//     </div>
-//   );
-// }
-
-// export default Dashboard;
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import './Dashboard.css';
