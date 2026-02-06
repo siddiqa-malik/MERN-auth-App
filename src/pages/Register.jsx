@@ -33,9 +33,13 @@ function Register() {
     }
 
     try {
+      // eslint-disable-next-line no-console
+      console.log("Register payload:", form);
       await api.post("/auth/register", form);
       navigate("/login");
     } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error("Register error:", JSON.stringify(err.response?.data, null, 2));
       setApiError(err.response?.data?.message || "Registration failed");
     }
   };
