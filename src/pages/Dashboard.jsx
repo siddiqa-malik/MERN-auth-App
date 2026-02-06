@@ -12,8 +12,15 @@ function Dashboard() {
       try {
         const token = localStorage.getItem("token");
         const res = await api.get("/users", { headers: { Authorization: `Bearer ${token}` } });
-        setUsers(res.data);
+        // eslint-disable-next-line no-console
+        console.log("Users response:", res.data);
+        
+        // Handle both array and object responses
+        const userList = Array.isArray(res.data) ? res.data : res.data?.users || [];
+        setUsers(userList);
       } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error("Fetch users error:", err.response?.data);
         setError(err.response?.data?.message || "Failed to fetch users");
       } finally {
         setLoading(false);
