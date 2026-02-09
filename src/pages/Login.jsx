@@ -23,11 +23,19 @@ function Login() {
     }
 
     try {
+      // eslint-disable-next-line no-console
+      console.log("Login payload:", form);
       const res = await api.post("/auth/login", form);
+      // eslint-disable-next-line no-console
+      console.log("Login success response:", res.data);
       localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      // eslint-disable-next-line no-console
+      console.error("Login error status:", err.response?.status);
+      // eslint-disable-next-line no-console
+      console.error("Login error data:", JSON.stringify(err.response?.data, null, 2));
+      setError(err.response?.data?.message || `Login failed (${err.response?.status})`);
     }
   };
 

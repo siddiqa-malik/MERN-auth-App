@@ -1,40 +1,33 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import './Dashboard.css';
+import "./Dashboard.css";
 
 function Dashboard() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const token = localStorage.getItem("token");
-        // eslint-disable-next-line no-console
-        console.log("Token from localStorage:", token);
-        // eslint-disable-next-line no-console
-        console.log("Making request to:", `/users`);
-        
-        const res = await api.get("/users", { headers: { Authorization: `Bearer ${token}` } });
-        // eslint-disable-next-line no-console
-        console.log("Users response:", res.data);
-        
-        // Handle both array and object responses
-        const userList = Array.isArray(res.data) ? res.data : res.data?.users || [];
+        const res = await api.get("/users");
+
+        // backend array bheje ya { users: [] }
+        const userList = Array.isArray(res.data)
+          ? res.data
+          : res.data?.users || [];
+
         setUsers(userList);
       } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error("Fetch users error status:", err.response?.status);
-        // eslint-disable-next-line no-console
-        console.error("Fetch users error data:", JSON.stringify(err.response?.data, null, 2));
-        // eslint-disable-next-line no-console
-        console.error("Full error:", err);
-        setError(err.response?.data?.message || `Failed to fetch users (${err.response?.status})`);
+        setError(
+          err.response?.data?.message ||
+            `Failed to fetch users (${err.response?.status})`
+        );
       } finally {
         setLoading(false);
       }
     };
+
     fetchUsers();
   }, []);
 
@@ -44,26 +37,33 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       <h2>Dashboard</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Created At</th>
-          </tr>
-        </thead>
-        <tbody>
-  {users.map(u => (
-    <tr key={u._id}>
-      <td>{u.username}</td>
-      <td>{u.email}</td>
-      <td>
-        {u.createdAt ? new Date(u.createdAt).toLocaleString() : "N/A"}
-      </td>
-    </tr>
-  ))}
-</tbody>
-      </table>
+
+      {users.length === 0 ? (
+        <p>No users found</p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Created At</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((u) => (
+              <tr key={u._id}>
+                <td>{u.username}</td>
+                <td>{u.email}</td>
+                <td>
+                  {u.createdAt
+                    ? new Date(u.createdAt).toLocaleString()
+                    : "N/A"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }
