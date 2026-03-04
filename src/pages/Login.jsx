@@ -28,7 +28,14 @@ function Login() {
       const res = await api.post("/auth/login", form);
       // eslint-disable-next-line no-console
       console.log("Login success response:", res.data);
-      localStorage.setItem("token", res.data.token);
+      const token = res.data?.token || res.data?.accessToken || res.data?.data?.token;
+      if (!token) {
+        // eslint-disable-next-line no-console
+        console.error("No token found in login response");
+        setError("Login succeeded but token not received from server");
+        return;
+      }
+      localStorage.setItem("token", token);
       navigate("/dashboard");
     } catch (err) {
       // eslint-disable-next-line no-console

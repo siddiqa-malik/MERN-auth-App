@@ -9,7 +9,15 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  config.headers = config.headers || {};
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+    // some backends expect the raw token header name
+    config.headers["x-auth-token"] = token;
+  }
+  // debug request headers (helps diagnose 401 issues)
+  // eslint-disable-next-line no-console
+  console.debug("API request:", config.method, config.url, "Auth:", !!config.headers.Authorization);
   return config;
 });
 
